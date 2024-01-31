@@ -11,7 +11,7 @@ def loadargs(compdi):
     compdi = base64.b64decode(compdi.encode())
     return pickle.loads(compdi)
 
-
+name=''
 if __name__ == "__main__":
     if "--inplace" in sys.argv:
         optionsdict = {}
@@ -20,8 +20,8 @@ if __name__ == "__main__":
 
         optionsdict = loadargs(sys.argv[-2])
         clidict = loadargs(sys.argv[-3])
-
-        sys.argv = sys.argv[:-3]
+        name=sys.argv[-4].strip('\'" ')
+        sys.argv = sys.argv[:-4]
         from Cython.Compiler import Options
         import re
 
@@ -46,10 +46,10 @@ def dumpdict(configdict):
     return base64.b64encode(testdictbytes).decode("utf-8")
 
 
-def compile_cython_code(configdict, optionsdict, cmd_line_args, **kwargs):
+def compile_cython_code(name,configdict, optionsdict, cmd_line_args, **kwargs):
     """
     Compile Cython code using the provided configuration, options, and command line arguments.
-
+    :param name: name of the module 
     :param configdict: dictionary containing configuration settings (passed to setuptools.Extension)
     :param optionsdict: dictionary containing options settings (passed to Cython.Compiler.Options)
     :param cmd_line_args: command line arguments (passed to setup as compiler_directives)
@@ -159,6 +159,7 @@ def compile_cython_code(configdict, optionsdict, cmd_line_args, **kwargs):
         }
 
         compile_cython_code(
+            name="lookdi",
             configdict=configdict,
             optionsdict=optionsdict,
             cmd_line_args=compiler_directives,
@@ -179,6 +180,7 @@ def compile_cython_code(configdict, optionsdict, cmd_line_args, **kwargs):
             __file__,
             "build_ext",
             "--inplace",
+            name,
             clidictbytesbase64,
             optiondictbytesbase64,
             testdictbytesbase64,
@@ -194,7 +196,7 @@ if __name__ == "__main__":
     ext_modules = Extension(**compdi)
 
     setup(
-        name="cythondict",
+        name=name,
         ext_modules=cythonize(ext_modules),
         compiler_directives=clidict,
     )

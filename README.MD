@@ -8,7 +8,7 @@ cycompi is a lightweight Python module designed to simplify the compilation of C
 
 ```python
     Compile Cython code using the provided configuration, options, and command line arguments.
-
+    :param name: name of the module 
     :param configdict: dictionary containing configuration settings (passed to setuptools.Extension)
     :param optionsdict: dictionary containing options settings (passed to Cython.Compiler.Options)
     :param cmd_line_args: command line arguments (passed to setup as compiler_directives)
@@ -120,6 +120,7 @@ cycompi is a lightweight Python module designed to simplify the compilation of C
         }
 
         compile_cython_code(
+            name="lookdi",
             configdict=configdict,
             optionsdict=optionsdict,
             cmd_line_args=compiler_directives,
