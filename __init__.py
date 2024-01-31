@@ -28,9 +28,8 @@ if __name__ == "__main__":
         for key, value in optionsdict.items():
             check1 = re.findall(r"^Options\.[a-z_]+$", str(key))
             check2 = re.findall(r"^(True|False|\d+)$", str(value))
-            print(check1)
-            print(check2)
-            exec(f"{key} = {value}", globals())
+            if check1 and check2:
+                exec(f"{key} = {value}", globals())
 
 
 def dumpdict(configdict):
