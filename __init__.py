@@ -197,6 +197,6 @@ if __name__ == "__main__":
 
     setup(
         name=name,
-        ext_modules=cythonize(ext_modules),
-        compiler_directives=clidict,
+        ext_modules=cythonize(ext_modules,compiler_directives=clidict)
+        
     )
